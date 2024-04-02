@@ -9,12 +9,25 @@ library(tidyr)
 
 # Define UI for application that draws a histogram
 ui <- fluidPage(
+  tags$head(
+    # Note the wrapping of the string in HTML()
+    tags$style(HTML("
+      @import url('https://fonts.googleapis.com/css2?family=Chivo+Mono:wght@700&display=swap');
+      h2 {
+        font-family: 'Chivo Mono', monospace;
+      }
+      .siderbar h2 {
+        font-family: 'Chivo Mono', monospace;
+      }"))
+  ),
 
     # Application title
-    titlePanel("Team Down Maximization Over Time"),
+    titlePanel("Team Down Maximization"),
+    
+    sidebarLayout(  
 
-    sidebarLayout(
-        sidebarPanel(
+    sidebarPanel(
+            width = 2,
             selectInput(inputId = 'season',
                         label = "Select Season",
                         choices = c('2016',
@@ -29,10 +42,9 @@ ui <- fluidPage(
             actionButton("goButton","View")
         ),
 
-        mainPanel(
-           plotOutput("master_plot")
-        )
-    ),
+    mainPanel(
+                  plotOutput("master_plot", height = "500px", width = "800px")
+        )),
     add_busy_spinner(spin = "fading-circle")
 )
 
@@ -95,31 +107,31 @@ server <- function(input, output) {
       pull()
     
     centroid <- data.frame(
-      quadrant = c("Maximizers", "Trying to avoid 3rd down", "Wasteful", "Comfortable with 3rd and 4th down"),
-      x = c(go_rate_mean + 10, go_rate_mean - 10, go_rate_mean -10, go_rate_mean + 10),  # Adjust these values according to your plot
-      y = c(run_rate_mean - 10, run_rate_mean -10, run_rate_mean + 10, run_rate_mean + 10)   # Adjust these values according to your plot
+      quadrant = c("Maximizing downs", "Scared of late downs", "Wasting downs", "Comfortable with late downs"),
+      x = c(go_rate_mean + 9, go_rate_mean - 9, go_rate_mean -9, go_rate_mean + 9),  # Adjust these values according to your plot
+      y = c(run_rate_mean - 9, run_rate_mean -9, run_rate_mean + 9, run_rate_mean + 9)   # Adjust these values according to your plot
     )
     
     
     return(ggplot(combined_rankings, aes(x = go_rate, y = run_rate)) +
-    geom_text(data = centroid, aes(x, y, label = quadrant), size = 5) +
     geom_point() +
     geom_mean_lines(aes(x0 = go_rate , y0 = run_rate)) +
-    geom_nfl_logos(aes(team_abbr = posteam), width = 0.065, alpha = 0.7) +
+    geom_nfl_logos(aes(team_abbr = posteam), width = 0.065, alpha = 0.5) +
+    geom_label(data = centroid, aes(x, y, label = quadrant), size = 5) +
     ggplot2::labs(
       x = "4th Down Go Rate When Analytics Say Go",
       y = "Run Rate on 2nd and 8+",
-      caption = "Data: @nflfastR",
-      title = "Down Maximization"
+      caption = "Data: @nflfastR"
     ) +
     scale_y_reverse() +
-    geom_abline(slope = -1, intercept = seq(-30,50, 10), alpha = .2) +
+    geom_abline(slope = -1, intercept = seq(-40,50, 10), alpha = .2) +
     theme_minimal() +
     theme(
       plot.title = element_text(face = "bold", size = 20),  # Make title bold and big
       axis.title = element_text(face = "bold", size = 14) , # Make axis titles bold
       axis.text.x = element_text(size = 12),  # Adjust the size as needed
-      axis.text.y = element_text(size = 12))
+      axis.text.y = element_text(size = 12),
+      panel.border = element_rect(color = "black", fill = NA, linewidth = 1))
     )})
 
 }
