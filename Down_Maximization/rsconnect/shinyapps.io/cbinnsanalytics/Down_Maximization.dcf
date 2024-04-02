@@ -5,7 +5,7 @@ account: cbinnsanalytics
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 11645663
-bundleId: 8447211
+bundleId: 8447302
 url: https://cbinnsanalytics.shinyapps.io/Down_Maximization/
 version: 1
 asMultiple: FALSE

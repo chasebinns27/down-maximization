@@ -22,7 +22,7 @@ ui <- fluidPage(
   ),
 
     # Application title
-    titlePanel("Team Down Maximization"),
+    titlePanel("Who's Making the Best Use of Their Downs?"),
     
     sidebarLayout(  
 
@@ -121,7 +121,7 @@ server <- function(input, output) {
     ggplot2::labs(
       x = "4th Down Go Rate When Analytics Say Go",
       y = "Run Rate on 2nd and 8+",
-      caption = "Data: @nflfastR"
+      caption = "Data: @nflfastR, @nfl4th"
     ) +
     scale_y_reverse() +
     geom_abline(slope = -1, intercept = seq(-40,50, 10), alpha = .2) +
