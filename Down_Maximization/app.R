@@ -9,17 +9,7 @@ library(tidyr)
 
 # Define UI for application that draws a histogram
 ui <- fluidPage(
-  tags$head(
-    # Note the wrapping of the string in HTML()
-    tags$style(HTML("
-      @import url('https://fonts.googleapis.com/css2?family=Chivo+Mono:wght@700&display=swap');
-      h2 {
-        font-family: 'Chivo Mono', monospace;
-      }
-      .siderbar h2 {
-        font-family: 'Chivo Mono', monospace;
-      }"))
-  ),
+  theme = bslib::bs_theme(bootswatch = 'journal'),
 
     # Application title
     titlePanel("Who's Making the Best Use of Their Downs?"),
