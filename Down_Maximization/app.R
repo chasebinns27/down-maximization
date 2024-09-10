@@ -60,9 +60,7 @@ server <- function(input, output) {
     fourth_down_rankings <- pbp %>%
       filter(
         go_boost > 0,
-        !is.na(go),
-        wp < .90,
-        wp > .10) %>%
+        !is.na(go)) %>%
       mutate(right = ifelse(go == 100, 1, 0),
              wrong = ifelse(go == 0, 1, 0)) %>%
       group_by(posteam) %>%
