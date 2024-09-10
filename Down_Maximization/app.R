@@ -10,9 +10,12 @@ library(tidyr)
 # Define UI for application that draws a histogram
 ui <- fluidPage(
   theme = bslib::bs_theme(bootswatch = 'journal'),
+    br(),
 
     # Application title
     titlePanel("Who's Making the Best Use of Their Downs?"),
+  
+    br(),
     
     sidebarLayout(  
 
@@ -103,6 +106,16 @@ server <- function(input, output) {
       y = c(run_rate_mean - 9, run_rate_mean -9, run_rate_mean + 9, run_rate_mean + 9)   # Adjust these values according to your plot
     )
     
+    # Fixed slope for lines from upper left to bottom right
+    slope <- -1  
+    
+    # Get the full range of go_rate and run_rate
+    x_range <- range(combined_rankings$go_rate)
+    y_range <- range(combined_rankings$run_rate)
+    
+    # Increase the number of intercepts and ensure they span the entire range
+    intercept_range <- seq(y_range[2] + 10, y_range[1] - 60, length.out = 12)
+    
     
     return(ggplot(combined_rankings, aes(x = go_rate, y = run_rate)) +
     geom_point() +
@@ -115,7 +128,7 @@ server <- function(input, output) {
       caption = "Data: @nflfastR, @nfl4th"
     ) +
     scale_y_reverse() +
-    geom_abline(slope = -1, intercept = seq(-40,50, 10), alpha = .2) +
+    geom_abline(slope = slope, intercept = intercept_range, alpha = .2) +
     theme_minimal() +
     theme(
       plot.title = element_text(face = "bold", size = 20),  # Make title bold and big
