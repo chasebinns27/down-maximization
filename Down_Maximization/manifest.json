@@ -799,6 +799,35 @@
         "Built": "R 4.3.1; ; 2023-10-24 02:25:34 UTC; windows"
       }
     },
+    "ggrepel": {
+      "Source": "CRAN",
+      "Repository": "https://cran.rstudio.com",
+      "description": {
+        "Package": "ggrepel",
+        "Version": "0.9.5",
+        "Authors@R": "c(\n    person(\"Kamil\", \"Slowikowski\", email = \"kslowikowski@gmail.com\", role = c(\"aut\", \"cre\"), comment = c(ORCID = \"0000-0002-2843-6370\")),\n    person(\"Alicia\", \"Schep\", role = \"ctb\", comment = c(ORCID = \"0000-0002-3915-0618\")),\n    person(\"Sean\", \"Hughes\", role = \"ctb\", comment = c(ORCID = \"0000-0002-9409-9405\")),\n    person(\"Trung Kien\", \"Dang\", role = \"ctb\", comment = c(ORCID = \"0000-0001-7562-6495\")),\n    person(\"Saulius\", \"Lukauskas\", role = \"ctb\"),\n    person(\"Jean-Olivier\", \"Irisson\", role = \"ctb\", comment = c(ORCID = \"0000-0003-4920-3880\")),\n    person(\"Zhian N\", \"Kamvar\", role = \"ctb\", comment = c(ORCID = \"0000-0003-1458-7108\")),\n    person(\"Thompson\", \"Ryan\", role = \"ctb\", comment = c(ORCID = \"0000-0002-0450-8181\")),\n    person(\"Dervieux\", \"Christophe\", role = \"ctb\", comment = c(ORCID = \"0000-0003-4474-2498\")),\n    person(\"Yutani\", \"Hiroaki\", role = \"ctb\"),\n    person(\"Pierre\", \"Gramme\", role = \"ctb\"),\n    person(\"Amir Masoud\", \"Abdol\", role = \"ctb\"),\n    person(\"Malcolm\", \"Barrett\", role = \"ctb\", comment = c(ORCID = \"0000-0003-0299-5825\")),\n    person(\"Robrecht\", \"Cannoodt\", role = \"ctb\", comment = c(ORCID = \"0000-0003-3641-729X\")),\n    person(\"Michał\", \"Krassowski\", role = \"ctb\", comment = c(ORCID = \"0000-0002-9638-7785\")),\n    person(\"Michael\", \"Chirico\", role = \"ctb\", comment = c(ORCID = \"0000-0003-0787-087X\")),\n    person(\"Pedro\", \"Aphalo\", role = \"ctb\", comment = c(ORCID = \"0000-0003-3385-972X\")),\n    person(\"Francis\", \"Barton\", role = \"ctb\")\n    )",
+        "Title": "Automatically Position Non-Overlapping Text Labels with\n'ggplot2'",
+        "Description": "Provides text and label geoms for 'ggplot2' that help to avoid\n    overlapping text labels. Labels repel away from each other and away from the\n    data points.",
+        "Depends": "R (>= 3.0.0), ggplot2 (>= 2.2.0)",
+        "Imports": "grid, Rcpp, rlang (>= 0.3.0), scales (>= 0.5.0), withr (>=\n2.5.0)",
+        "Suggests": "knitr, rmarkdown, testthat, svglite, vdiffr, gridExtra, ggpp,\npatchwork, devtools, prettydoc, ggbeeswarm, dplyr, magrittr,\nreadr, stringr",
+        "VignetteBuilder": "knitr",
+        "License": "GPL-3 | file LICENSE",
+        "URL": "https://ggrepel.slowkow.com/, https://github.com/slowkow/ggrepel",
+        "BugReports": "https://github.com/slowkow/ggrepel/issues",
+        "RoxygenNote": "7.2.3",
+        "LinkingTo": "Rcpp",
+        "Encoding": "UTF-8",
+        "NeedsCompilation": "yes",
+        "Packaged": "2024-01-10 16:39:29 UTC; ks38",
+        "Author": "Kamil Slowikowski [aut, cre] (<https://orcid.org/0000-0002-2843-6370>),\n  Alicia Schep [ctb] (<https://orcid.org/0000-0002-3915-0618>),\n  Sean Hughes [ctb] (<https://orcid.org/0000-0002-9409-9405>),\n  Trung Kien Dang [ctb] (<https://orcid.org/0000-0001-7562-6495>),\n  Saulius Lukauskas [ctb],\n  Jean-Olivier Irisson [ctb] (<https://orcid.org/0000-0003-4920-3880>),\n  Zhian N Kamvar [ctb] (<https://orcid.org/0000-0003-1458-7108>),\n  Thompson Ryan [ctb] (<https://orcid.org/0000-0002-0450-8181>),\n  Dervieux Christophe [ctb] (<https://orcid.org/0000-0003-4474-2498>),\n  Yutani Hiroaki [ctb],\n  Pierre Gramme [ctb],\n  Amir Masoud Abdol [ctb],\n  Malcolm Barrett [ctb] (<https://orcid.org/0000-0003-0299-5825>),\n  Robrecht Cannoodt [ctb] (<https://orcid.org/0000-0003-3641-729X>),\n  Michał Krassowski [ctb] (<https://orcid.org/0000-0002-9638-7785>),\n  Michael Chirico [ctb] (<https://orcid.org/0000-0003-0787-087X>),\n  Pedro Aphalo [ctb] (<https://orcid.org/0000-0003-3385-972X>),\n  Francis Barton [ctb]",
+        "Maintainer": "Kamil Slowikowski <kslowikowski@gmail.com>",
+        "Repository": "CRAN",
+        "Date/Publication": "2024-01-10 21:03:02 UTC",
+        "Built": "R 4.3.3; x86_64-w64-mingw32; 2024-09-04 02:40:47 UTC; windows",
+        "Archs": "x64"
+      }
+    },
     "glue": {
       "Source": "CRAN",
       "Repository": "https://cran.rstudio.com",
@@ -2262,7 +2291,7 @@
   },
   "files": {
     "app.R": {
-      "checksum": "5ac69f7e6a0dd895c51d80116d226f4c"
+      "checksum": "89dcc2897b045d80d6f7cb7322f39b4c"
     }
   },
   "users": null
