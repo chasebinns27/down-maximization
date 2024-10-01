@@ -59,7 +59,8 @@ server <- function(input, output) {
     
     fourth_down_rankings <- pbp %>%
       filter(
-        go_boost > 0,
+        go_boost > 1.5,
+        wp >= .1,
         !is.na(go)) %>%
       mutate(right = ifelse(go == 100, 1, 0),
              wrong = ifelse(go == 0, 1, 0)) %>%
@@ -104,37 +105,39 @@ server <- function(input, output) {
       y = c(run_rate_mean - 9, run_rate_mean -9, run_rate_mean + 9, run_rate_mean + 9)   # Adjust these values according to your plot
     )
     
-    # Fixed slope for lines from upper left to bottom right
-    slope <- -1  
-    
-    # Get the full range of go_rate and run_rate
-    x_range <- range(combined_rankings$go_rate)
-    y_range <- range(combined_rankings$run_rate)
-    
-    # Increase the number of intercepts and ensure they span the entire range
-    intercept_range <- seq(y_range[2] + 10, y_range[1] - 60, length.out = 12)
+    library(ggplot2)
+    library(ggrepel)
     
     
-    return(ggplot(combined_rankings, aes(x = go_rate, y = run_rate)) +
-    geom_point() +
-    geom_mean_lines(aes(x0 = go_rate , y0 = run_rate)) +
-    geom_nfl_logos(aes(team_abbr = posteam), width = 0.065, alpha = 0.5) +
-    geom_label(data = centroid, aes(x, y, label = quadrant), size = 5) +
-    ggplot2::labs(
-      x = "4th Down Go Rate When Analytics Say Go",
-      y = "Run Rate on 2nd and 8+",
-      caption = "Data: @nflfastR, @nfl4th"
-    ) +
-    scale_y_reverse() +
-    geom_abline(slope = slope, intercept = intercept_range, alpha = .2) +
-    theme_minimal() +
-    theme(
-      plot.title = element_text(face = "bold", size = 20),  # Make title bold and big
-      axis.title = element_text(face = "bold", size = 14) , # Make axis titles bold
-      axis.text.x = element_text(size = 12),  # Adjust the size as needed
-      axis.text.y = element_text(size = 12),
-      panel.border = element_rect(color = "black", fill = NA, linewidth = 1))
-    )})
+    # Adjusted plot code
+    ggplot(combined_rankings, aes(x = go_rate, y = run_rate)) +
+      geom_point() +
+      geom_mean_lines(aes(x0 = go_rate, y0 = run_rate)) +
+      geom_nfl_logos(aes(team_abbr = posteam), width = 0.065, alpha = 0.5) +
+      
+      # Use ggrepel to avoid overlapping labels
+      geom_label_repel(data = centroid, aes(x, y, label = quadrant), 
+                       size = 5, 
+                       box.padding = 0.5, 
+                       segment.color = "grey50") + 
+      
+      labs(
+        x = "4th Down Go Rate When Analytics Say Go",
+        y = "Run Rate on 2nd and 8+",
+        caption = "Data: @nflfastR, @nfl4th"
+      ) +
+      scale_y_reverse() +
+      theme_minimal() +
+      theme(
+        plot.title = element_text(face = "bold", size = 20),
+        axis.title = element_text(face = "bold", size = 14),
+        axis.text.x = element_text(size = 12),
+        axis.text.y = element_text(size = 12),
+        panel.border = element_rect(color = "black", fill = NA, linewidth = 1)
+      )
+    
+    
+    })
 
 }
 
