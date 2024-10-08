@@ -61,8 +61,7 @@ server <- function(input, output) {
       filter(
         go_boost > 1.5,
         wp >= .1,
-        !is.na(go),
-        play_type != 'no_play') %>%
+        !is.na(go)) %>%
       mutate(right = ifelse(go == 100, 1, 0),
              wrong = ifelse(go == 0, 1, 0)) %>%
       group_by(posteam) %>%
