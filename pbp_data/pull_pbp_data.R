@@ -7,12 +7,12 @@ library(ggplot2)
 library(nflplotR)
 
 
-years <- 2024  #c(2016:2023)
+years <- c(2016:2024)  #c(2016:2023)
 
 
 for(year in years) {
 pbp <- nfl4th::load_4th_pbp(year) %>%
-  filter(down %in% c(2,4)) %>%
+  filter(down %in% c(1,2,3,4)) %>%
   select(go_boost, go, wp,posteam, pass, rush, play_type,
          epa, two_point_conv_result, down, ydstogo,)
 
