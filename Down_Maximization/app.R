@@ -13,7 +13,7 @@ ui <- fluidPage(
     br(),
 
     # Application title
-    titlePanel("Who's Making the Best Use of Their Downs?"),
+    titlePanel("Analyzing Fourth Down Aggression"),
   
     br(),
     
@@ -37,8 +37,12 @@ ui <- fluidPage(
         ),
 
     mainPanel(
-                  plotOutput("master_plot", height = "500px", width = "800px")
-        )),
+      tabsetPanel(
+        tabPanel("Down Maximization",
+                  plotOutput("master_plot", height = "500px", width = "800px")),
+        tabPanel("Short Yardage Smarts",
+                 plotOutput("sy_plot", height = "500px", width = "800px"))
+        ))),
     add_busy_spinner(spin = "fading-circle")
 )
 
@@ -138,6 +142,100 @@ server <- function(input, output) {
     
     
     })
+  
+  output$sy_plot <- renderPlot({
+    
+    pbp_response <- GET(csv_url())
+    
+    pbp <- read.csv(text = rawToChar(pbp_response$content))
+    
+    fourth_down_rankings <- pbp %>%
+      filter(
+        go_boost > 1.5,
+        wp >= .1,
+        !is.na(go),
+        ydstogo <= 3) %>%
+      mutate(right = ifelse(go == 100, 1, 0),
+             wrong = ifelse(go == 0, 1, 0)) %>%
+      group_by(posteam) %>%
+      summarize(right_decisions = sum(right),
+                total_decisions = sum(right + wrong)) %>%
+      ungroup() %>%
+      mutate(right_pct = (right_decisions/total_decisions)*100)
+    
+    
+    short_yardage_rankings <- pbp %>%
+      filter(
+        (pass == 1 | rush == 1),
+        play_type %in% c("pass", "run"),
+        !is.na(epa),
+        is.na(two_point_conv_result),
+        down %in% c(1,2, 3, 4),
+        ydstogo <= 3,
+        wp < 0.90,
+        wp > 0.10
+      ) %>%
+      mutate(success = ifelse(epa > 0, 1, 0)) %>%
+      group_by(posteam) %>%
+      summarize(
+        success_total = sum(success),
+        plays_total = n()
+      ) %>%
+      mutate(success_rate = (success_total / plays_total) * 100)
+    
+    # Combine rankings
+    combined_rankings <- inner_join(
+      short_yardage_rankings,
+      fourth_down_rankings,
+      by = "posteam"
+    ) %>%
+      select(posteam, success_rate, go_rate = right_pct)
+    
+    # Calculate means
+    success_rate_mean <- mean(combined_rankings$success_rate)
+    go_rate_mean <- mean(combined_rankings$go_rate)
+    
+    # Create quadrant labels
+    centroid <- data.frame(
+      quadrant = c(
+        "Sucessful and Smart", "Confusingly Cautious",
+        "Understandably Cautious", "Bad and Bold"
+      ),
+      x = c(
+        go_rate_mean + 9, go_rate_mean - 9,
+        go_rate_mean - 9, go_rate_mean + 9
+      ),
+      y = c(
+        success_rate_mean + 9, success_rate_mean + 9,
+        success_rate_mean - 9, success_rate_mean - 9
+      )
+    )
+    
+    # Create plot
+    ggplot(combined_rankings, aes(x = go_rate, y = success_rate)) +
+      geom_point() +
+      geom_mean_lines(aes(x0 = go_rate_mean, y0 = success_rate_mean)) +
+      geom_nfl_logos(aes(team_abbr = posteam), width = 0.065, alpha = 0.5) +
+      # Use ggrepel to avoid overlapping labels
+      geom_label_repel(data = centroid, aes(x, y, label = quadrant), 
+                       size = 5, 
+                       box.padding = 0.5, 
+                       segment.color = "grey50") + 
+      labs(
+        x = "Short 4th Down Go Rate When Analytics Say Go",
+        y = "Short Yardage Success Rate",
+        caption = "Data: @nflfastR, @nfl4th"
+      ) +
+      theme_minimal() +
+      theme(
+        plot.title = element_text(face = "bold", size = 20),
+        axis.title = element_text(face = "bold", size = 14),
+        axis.text = element_text(size = 12),
+        panel.border = element_rect(color = "black", fill = NA, linewidth = 1)
+      )
+    
+    
+  })
 
 }
 
