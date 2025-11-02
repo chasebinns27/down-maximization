@@ -31,9 +31,8 @@ ui <- fluidPage(
                                     '2021',
                                     '2022',
                                     '2023',
-                                    '2024',
-                                    '2025'),
-                        selected = '2025'),
+                                    '2024'),
+                        selected = '2024'),
             actionButton("goButton","View")
         ),
 
